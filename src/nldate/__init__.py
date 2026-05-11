@@ -155,43 +155,12 @@ def parse(s: str, today: date | None = None) -> date:
         today = date.today()
 
     s = _clean(s)
+    num_pattern = r"\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten"
+    unit_pattern = r"year|years|month|months|week|weeks|day|days"
 
     m = re.fullmatch(
-        r"in (\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) (day|days|week|weeks|month|months|year|years)",
-        s,
-    )
-    if m:
-        return _add(today, _num(m.group(1)), m.group(2))
-
-    m = re.fullmatch(
-        r"(\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) (day|days|week|weeks|month|months|year|years) ago",
-        s,
-    )
-    if m:
-        return _add(today, -_num(m.group(1)), m.group(2))
-
-    m = re.fullmatch(
-        r"(\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) "
-        r"(day|days|week|weeks|month|months|year|years) "
-        r"(before|after|from) (.+)",
-        s,
-    )
-    if m:
-        amount = _num(m.group(1))
-        unit = m.group(2)
-        direction = m.group(3)
-        base = _parse_base(m.group(4), today)
-
-        if direction == "before":
-            amount *= -1
-
-        return _add(base, amount, unit)
-
-    m = re.fullmatch(
-        r"(\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) "
-        r"(year|years|month|months|week|weeks|day|days) and "
-        r"(\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) "
-        r"(year|years|month|months|week|weeks|day|days) "
+        rf"({num_pattern}) ({unit_pattern}) (?:and )?"
+        rf"({num_pattern}) ({unit_pattern}) "
         r"(before|after|from) (.+)",
         s,
     )
@@ -207,5 +176,28 @@ def parse(s: str, today: date | None = None) -> date:
         result = _add(base, sign * amount1, unit1)
         result = _add(result, sign * amount2, unit2)
         return result
+
+    m = re.fullmatch(rf"in ({num_pattern}) ({unit_pattern})", s)
+    if m:
+        return _add(today, _num(m.group(1)), m.group(2))
+
+    m = re.fullmatch(rf"({num_pattern}) ({unit_pattern}) ago", s)
+    if m:
+        return _add(today, -_num(m.group(1)), m.group(2))
+
+    m = re.fullmatch(
+        rf"({num_pattern}) ({unit_pattern}) (before|after|from) (.+)",
+        s,
+    )
+    if m:
+        amount = _num(m.group(1))
+        unit = m.group(2)
+        direction = m.group(3)
+        base = _parse_base(m.group(4), today)
+
+        if direction == "before":
+            amount *= -1
+
+        return _add(base, amount, unit)
 
     return _parse_base(s, today)
