@@ -1,7 +1,7 @@
 [project]
 name = "nldate"
 version = "0.1.0"
-description = "Add your description here"
+description = "Natural language date parser"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
@@ -13,6 +13,13 @@ dev = [
     "ruff>=0.15.12",
 ]
 
+[build-system]
+requires = ["uv_build>=0.9.0,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = true
+
 [tool.pytest.ini_options]
-pythonpath = ["."]
+pythonpath = ["src"]
 testpaths = ["tests"]
