@@ -115,9 +115,9 @@ def _parse_base(s: str, today: date) -> date:
     if m:
         return date(int(m.group(3)), MONTHS[m.group(1)], int(m.group(2)))
 
-    m = re.fullmatch(rf"(\d{{1,2}}) ({month_names}) (\d{{4}})", s)
+    m = re.fullmatch(r"(\d{4})[-/](\d{1,2})[-/](\d{1,2})", s)
     if m:
-        return date(int(m.group(3)), MONTHS[m.group(2)], int(m.group(1)))
+        return date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
 
     m = re.fullmatch(r"(\d{4})-(\d{1,2})-(\d{1,2})", s)
     if m:

@@ -55,3 +55,7 @@ def test_iso_format():
 def test_bad_input():
     with pytest.raises(ValueError):
         parse("not a date", TODAY)
+
+
+def test_slash_date():
+    assert parse("2025/12/04", TODAY) == date(2025, 12, 4)
