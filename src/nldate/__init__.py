@@ -132,11 +132,17 @@ def parse(s: str, today: date | None = None) -> date:
 
     s = _clean(s)
 
-    m = re.fullmatch(r"in (\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) (day|days|week|weeks|month|months|year|years)", s)
+    m = re.fullmatch(
+        r"in (\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) (day|days|week|weeks|month|months|year|years)",
+        s,
+    )
     if m:
         return _add(today, _num(m.group(1)), m.group(2))
 
-    m = re.fullmatch(r"(\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) (day|days|week|weeks|month|months|year|years) ago", s)
+    m = re.fullmatch(
+        r"(\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten) (day|days|week|weeks|month|months|year|years) ago",
+        s,
+    )
     if m:
         return _add(today, -_num(m.group(1)), m.group(2))
 
