@@ -110,6 +110,10 @@ def _parse_base(s: str, today: date) -> date:
         return today + timedelta(days=1)
     if s == "yesterday":
         return today - timedelta(days=1)
+    if s == "the day after tomorrow":
+        return today + timedelta(days=2)
+    if s == "the day before yesterday":
+        return today - timedelta(days=2)
 
     m = re.fullmatch(r"next (" + "|".join(WEEKDAYS) + r")", s)
     if m:
