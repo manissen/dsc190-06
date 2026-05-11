@@ -73,6 +73,7 @@ def _clean(s: str) -> str:
     s = s.lower().strip()
     s = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", s)
     s = s.replace(",", "")
+    s = s.replace(".", "")
     return re.sub(r"\s+", " ", s)
 
 

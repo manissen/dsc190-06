@@ -67,3 +67,7 @@ def test_abbrev_month():
 
 def test_abbrev_month_and_period():
     assert parse("Dec. 1, 2025", TODAY) == date(2025, 12, 1)
+
+
+def test_two_units_comma_before_abbrev_date():
+    assert parse("2 years, 3 months before Dec. 1, 2025", TODAY) == date(2023, 9, 1)
