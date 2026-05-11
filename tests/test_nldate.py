@@ -63,3 +63,7 @@ def test_slash_date():
 
 def test_abbrev_month():
     assert parse("Dec 1, 2025", TODAY) == date(2025, 12, 1)
+
+
+def test_abbrev_month_and_period():
+    assert parse("Dec. 1, 2025", TODAY) == date(2025, 12, 1)
